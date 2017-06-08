@@ -1,4 +1,5 @@
 <?php
+use App\Models\Appointment;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,4 +14,12 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/export/{type}', function ($type) {
+    return Excel::create('Export'.$type, function ($excel) {
+        $excel->sheet('Sheetname', function ($sheet) {
+            $sheet->fromArray(Appointment::all(), null, 'A1', false, false);
+        });
+    })->download($type);
 });

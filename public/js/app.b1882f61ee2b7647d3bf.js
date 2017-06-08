@@ -63,168 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(2);
-
-__webpack_require__(4);
-__webpack_require__(3);
-__webpack_require__(5);
-
-window.someApp = angular.module('someApp', ['ngRoute', 'homeService', 'mainController', 'formController']);
-
-window.someApp.config(function ($routeProvider, $locationProvider) {
-    $routeProvider.when('/', {
-        templateUrl: 'templates/home.html',
-        controller: 'mainController'
-    }).when('/create/', {
-        templateUrl: 'templates/form.html',
-        controller: 'formController'
-    }).when('/edit/:id', {
-        templateUrl: 'templates/form.html',
-        controller: 'formController'
-    });
-
-    $locationProvider.html5Mode(false);
-});
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-try {
-    window.$ = window.jQuery = __webpack_require__(7);
-
-    __webpack_require__(6);
-} catch (e) {}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-angular.module('formController', []).controller('formController', function ($scope, $http, $location, $routeParams, Appointement) {
-    $scope.appointementData = {
-        date: '2017-06-08 08:05:40'
-    };
-    $scope.route = $routeParams;
-    $scope.loading = false;
-    if (parseInt($scope.route.id) > 0) {
-        $scope.loading = true;
-        Appointement.get(parseInt($scope.route.id)).then(function (response) {
-            $scope.appointementData = response.data;
-            $scope.loading = false;
-        });
-    }
-    $scope.submitAppointement = function () {
-        $scope.errors = false;
-        $scope.loading = true;
-        if ($scope.appointementData.status === "confirmed") {
-            $scope.appointementData.status = "finished";
-        }
-
-        Appointement.save($scope.appointementData).then(function (data) {
-            alert('appointment placed');
-            $location.path("/");
-        }, function (data) {
-            console.log('error', data.data);
-            $scope.errors = data.data;
-        });
-    };
-});
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-angular.module('mainController', []).controller('mainController', function ($scope, $http, Appointement) {
-    $scope.$watch('$viewContentLoaded', function () {
-        $scope.refresh();
-    });
-
-    $scope.refresh = function (a) {
-        $scope.loading = true;
-        Appointement.get().then(function (response) {
-            $scope.appointements = response.data;
-            $scope.loading = false;
-        });
-    };
-
-    $scope.deleteAppointement = function (id) {
-        if (confirm('Are you sure you want to delete this appointment?')) {
-            Appointement.destroy(id).then(function (data) {
-                $scope.refresh();
-            });
-        }
-    };
-
-    $scope.cancelAppointement = function (appointementData) {
-        appointementData.status = 'canceled';
-        Appointement.save(appointementData).then(function (data) {
-            $scope.refresh();
-        }, function (data) {
-            console.log('error', data.data);
-        });
-    };
-
-    $scope.confirmAppointement = function (appointementData) {
-        appointementData.status = 'confirmed';
-        Appointement.save(appointementData).then(function (data) {
-            $scope.refresh();
-        }, function (data) {
-            console.log('error', data.data);
-        });
-    };
-});
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-angular.module('homeService', []).factory('Appointement', function ($http) {
-    return {
-        get: function get(id) {
-            return parseInt(id) > 0 ? $http.get('/api/appointments/single/' + id) : $http.get('/api/appointments/');
-        },
-        save: function save(appointmentData) {
-            if (parseInt(appointmentData.id) > 0) {
-                return $http({
-                    method: 'PUT',
-                    url: '/api/appointments/' + appointmentData.id,
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: $.param(appointmentData)
-                });
-            } else {
-                return $http({
-                    method: 'POST',
-                    url: '/api/appointments',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: $.param(appointmentData)
-                });
-            }
-        },
-        destroy: function destroy(id) {
-            return $http.delete('/api/appointments/' + id);
-        }
-    };
-});
-
-/***/ }),
-/* 6 */
+/***/ "./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js":
 /***/ (function(module, exports) {
 
 /*!
@@ -2607,7 +2451,8 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 7 */
+
+/***/ "./node_modules/jquery/dist/jquery.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12867,12 +12712,177 @@ return jQuery;
 
 
 /***/ }),
-/* 8 */
+
+/***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(0);
-module.exports = __webpack_require__(1);
+__webpack_require__("./resources/assets/js/bootstrap.js");
+
+__webpack_require__("./resources/assets/js/controller/mainCtrl.js");
+__webpack_require__("./resources/assets/js/controller/formCtrl.js");
+__webpack_require__("./resources/assets/js/services/homeService.js");
+
+window.someApp = angular.module('someApp', ['ngRoute', 'homeService', 'mainController', 'formController']);
+
+window.someApp.config(function ($routeProvider, $locationProvider) {
+    $routeProvider.when('/', {
+        templateUrl: 'templates/home.html',
+        controller: 'mainController'
+    }).when('/create/', {
+        templateUrl: 'templates/form.html',
+        controller: 'formController'
+    }).when('/edit/:id', {
+        templateUrl: 'templates/form.html',
+        controller: 'formController'
+    });
+
+    $locationProvider.html5Mode(false);
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/bootstrap.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+try {
+    window.$ = window.jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
+
+    __webpack_require__("./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js");
+} catch (e) {}
+
+/***/ }),
+
+/***/ "./resources/assets/js/controller/formCtrl.js":
+/***/ (function(module, exports) {
+
+angular.module('formController', []).controller('formController', function ($scope, $http, $location, $routeParams, Appointement) {
+    $scope.appointementData = {
+        date: '2017-06-08 08:05:40'
+    };
+    $scope.route = $routeParams;
+    $scope.loading = false;
+    if (parseInt($scope.route.id) > 0) {
+        $scope.loading = true;
+        Appointement.get(parseInt($scope.route.id)).then(function (response) {
+            $scope.appointementData = response.data;
+            $scope.loading = false;
+        });
+    }
+    $scope.submitAppointement = function () {
+        $scope.errors = false;
+        $scope.loading = true;
+        if ($scope.appointementData.status === "confirmed") {
+            $scope.appointementData.status = "finished";
+        }
+
+        Appointement.save($scope.appointementData).then(function (data) {
+            alert('appointment placed');
+            $location.path("/");
+        }, function (data) {
+            console.log('error', data.data);
+            $scope.errors = data.data;
+        });
+    };
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/controller/mainCtrl.js":
+/***/ (function(module, exports) {
+
+angular.module('mainController', []).controller('mainController', function ($scope, $http, Appointement) {
+    $scope.$watch('$viewContentLoaded', function () {
+        $scope.refresh();
+    });
+
+    $scope.refresh = function (a) {
+        $scope.loading = true;
+        Appointement.get().then(function (response) {
+            $scope.appointements = response.data;
+            $scope.loading = false;
+        });
+    };
+
+    $scope.deleteAppointement = function (id) {
+        if (confirm('Are you sure you want to delete this appointment?')) {
+            Appointement.destroy(id).then(function (data) {
+                $scope.refresh();
+            });
+        }
+    };
+
+    $scope.cancelAppointement = function (appointementData) {
+        appointementData.status = 'canceled';
+        Appointement.save(appointementData).then(function (data) {
+            $scope.refresh();
+        }, function (data) {
+            console.log('error', data.data);
+        });
+    };
+
+    $scope.confirmAppointement = function (appointementData) {
+        appointementData.status = 'confirmed';
+        Appointement.save(appointementData).then(function (data) {
+            $scope.refresh();
+        }, function (data) {
+            console.log('error', data.data);
+        });
+    };
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/services/homeService.js":
+/***/ (function(module, exports) {
+
+angular.module('homeService', []).factory('Appointement', function ($http) {
+    return {
+        get: function get(id) {
+            return parseInt(id) > 0 ? $http.get('/api/appointments/single/' + id) : $http.get('/api/appointments/');
+        },
+        save: function save(appointmentData) {
+            if (parseInt(appointmentData.id) > 0) {
+                return $http({
+                    method: 'PUT',
+                    url: '/api/appointments/' + appointmentData.id,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: $.param(appointmentData)
+                });
+            } else {
+                return $http({
+                    method: 'POST',
+                    url: '/api/appointments',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: $.param(appointmentData)
+                });
+            }
+        },
+        destroy: function destroy(id) {
+            return $http.delete('/api/appointments/' + id);
+        }
+    };
+});
+
+/***/ }),
+
+/***/ "./resources/assets/sass/app.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("./resources/assets/js/app.js");
+module.exports = __webpack_require__("./resources/assets/sass/app.scss");
 
 
 /***/ })
-/******/ ]);
+
+/******/ });

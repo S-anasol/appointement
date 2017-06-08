@@ -1,10 +1,12 @@
-require('./controller/mainCtrl')
-require('./controller/formCtrl')
-require('./services/homeService')
+require('./bootstrap');
 
-var someApp = angular.module('someApp', ['ngRoute', 'homeService', 'mainController', 'formController']);
+require('./controller/mainCtrl');
+require('./controller/formCtrl');
+require('./services/homeService');
 
-someApp.config(function($routeProvider, $locationProvider) {
+window.someApp = angular.module('someApp', ['ngRoute', 'homeService', 'mainController', 'formController']);
+
+window.someApp.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'templates/home.html',

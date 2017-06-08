@@ -1,15 +1,28 @@
 <button ng-click="refresh()" class="btn btn-info">Refresh</button>
 <a href="/#!/create/" class="btn btn-success">New appointement</a>
 
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Export <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/export/csv">as CSV</a></li>
+    <li><a href="/export/pdf">as PDF</a></li>
+    <li><a href="/export/xlsx">as XLS</a></li>
+  </ul>
+</div>
+
 <p class="text-center" ng-show="loading">Loading...</p>
 
-<div class="appointement" ng-hide="loading" ng-repeat="appointement in appointements | orderBy:'-date'">
-    <h3>appointement #{{ appointement.id }} <small>{{ appointement.date }}</h3>
+<div class="appointement" ng-hide="loading" ng-repeat="appointement in appointements | orderBy:'-updated_at'">
+    <h3>{{ appointement.company_name }} #{{ appointement.id }} <small>{{ appointement.date }}</h3>
+    <p><span class="label label-info">{{ appointement.status }}</span></p>
     <p>{{ appointement.contact_name }} / {{ appointement.contact_email }}</p>
+    <p ng-if="appointement.status == 'finished'">Result:{{ appointement.result_note }}</p>
     <p>
-        <a href="/#!/edit/{{appointement.id}}/" class="btn btn-info btn-xs">Edit</a>
-        <a href="#" ng-click="cancelAppointement(appointement.id)" class="btn btn-warning btn-xs">Cancel</a>
-        <a href="#" ng-click="confirmAppointement(appointement.id)" class="btn btn-success btn-xs">Confirm</a>
-        <a href="#" ng-click="deleteAppointement(appointement.id)" class="btn btn-danger btn-xs">Delete</a>
+        <a ng-if="appointement.status != 'finished'" href="/#!/edit/{{appointement.id}}/" class="btn btn-info btn-xs">Edit</a>
+        <a ng-if="appointement.status != 'canceled' && appointement.status != 'finished'" href="#" ng-click="cancelAppointement(appointement)" class="btn btn-warning btn-xs">Cancel</a>
+        <a ng-if="appointement.status != 'confirmed' && appointement.status != 'finished'" href="#" ng-click="confirmAppointement(appointement)" class="btn btn-success btn-xs">Confirm</a>
+        <a ng-if="appointement.status != 'deleted'"ng-if="appointement.status != 'canceled'" href="#" ng-click="deleteAppointement(appointement.id)" class="btn btn-danger btn-xs">Delete</a>
     </p>
 </div>

@@ -15,7 +15,10 @@
         }
 
         .appointement {
-            padding-bottom: 20px;
+            padding: 10px; 
+            margin: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
         }
     </style>
 

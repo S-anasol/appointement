@@ -1,9 +1,12 @@
 angular.module('mainController', [])
 
     .controller('mainController', function($scope, $http, Appointement) {
-        $scope.appointementData = {};
+        $scope.$watch('$viewContentLoaded', function() {
+            $scope.refresh();
+        });
 
-        $scope.refresh = function() {
+
+        $scope.refresh = function(a) {
             $scope.loading = true;
             Appointement.get()
                 .then(function(response) {
@@ -14,18 +17,30 @@ angular.module('mainController', [])
 
         $scope.deleteAppointement = function(id) {
             if (confirm('Are you sure you want to delete this appointment?')) {
-                $scope.loading = true;
-
                 Appointement.destroy(id)
-                    .success(function(data) {
-                        Appointement.then()
-                            .success(function(response) {
-                                $scope.appointements = response.data;
-                                $scope.loading = false;
-                            });
+                    .then(function(data) {
+                        $scope.refresh();
                     });
             }
         };
 
-        $scope.refresh();
+        $scope.cancelAppointement = function(appointementData) {
+            appointementData.status = 'canceled';
+            Appointement.save(appointementData)
+                .then(function(data) {
+                    $scope.refresh();
+                }, function(data) {
+                    console.log('error', data.data);
+                });
+        };
+
+        $scope.confirmAppointement = function(appointementData) {
+            appointementData.status = 'confirmed';
+            Appointement.save(appointementData)
+                .then(function(data) {
+                    $scope.refresh();
+                }, function(data) {
+                    console.log('error', data.data);
+                });
+        };
     });

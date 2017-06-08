@@ -17,6 +17,10 @@ angular.module('formController', [])
         $scope.submitAppointement = function() {
             $scope.errors = false;
             $scope.loading = true;
+            if ($scope.appointementData.status === "confirmed") {
+                $scope.appointementData.status = "finished";
+            }
+
             Appointement.save($scope.appointementData)
                 .then(function(data) {
                     alert('appointment placed');
