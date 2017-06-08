@@ -1,0 +1,64 @@
+<p>
+    <a class="btn btn-info btn-sm" href="/#!/">return to main page</a>
+</p>
+<div class="alert alert-danger" ng-if="errors" ng-repeat="error in errors">
+    <p ng-repeat="err in error">{{err}}</p>
+</div>
+<form ng-submit="submitAppointement()">
+    <div class="form-group">
+        <label for="date">Appointment date</label>
+        <input type="text" class="form-control" ng-model="appointementData.date" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_name">Company name</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_street">Company street</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_street" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_house">Company house</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_house" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_postal">Company postal code</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_postal" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_locality">Company locality</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_locality" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company_url">Company URL</label>
+        <input type="text" class="form-control" ng-model="appointementData.company_url" required>
+    </div>
+
+    <div class="form-group">
+        <label for="contact_number">Contact tel</label>
+        <input type="text" class="form-control" ng-model="appointementData.contact_number" required>
+    </div>
+
+    <div class="form-group">
+        <label for="contact_email">Contact email</label>
+        <input type="text" class="form-control" ng-model="appointementData.contact_email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="contact_salutation">Contact salutation</label>
+        <input type="text" class="form-control" ng-model="appointementData.contact_salutation" required>
+    </div>
+
+    <div class="form-group">
+        <label for="contact_name">Contact name</label>
+        <input type="text" class="form-control" ng-model="appointementData.contact_name" required>
+    </div>
+
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
